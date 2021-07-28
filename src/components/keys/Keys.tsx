@@ -45,7 +45,7 @@ const Keys: React.FC = () => {
 						keys.map((key, i) => {
 							return (
 								<Box key={i}>
-									<Text>{key}</Text>
+									<Text onCopy={() => { window.location.href = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' }}>{key}</Text>
 									<Divider mt={2} />
 								</Box>
 							)
