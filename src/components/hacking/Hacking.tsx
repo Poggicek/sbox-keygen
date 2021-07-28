@@ -11,6 +11,15 @@ interface IActionList {
 	message: string
 }
 
+const delayedAction = (func: () => void, time: number): Promise<void> => {
+	return new Promise((resolve, reject) => {
+		setTimeout(() => {
+			func()
+			resolve()
+		}, time)
+	})
+}
+
 const Hacking: React.FC = () => {
 	const [formData, setFormData] = useRecoilState(formState);
 	const [hackingMessage, setHackingMessage] = useState(`Connecting to api.valvesoftware.com as ${formData.username} (attempt 1)`);
@@ -24,30 +33,31 @@ const Hacking: React.FC = () => {
 	}
 
 	useEffect(() => {
-		setTimeout(() => {
-			addAction("Failed to connect to the server (attempt 1)", false);
-			setHackingMessage(`Connecting to api.valvesoftware.com as ${formData.username} (attempt 2)`);
-		}, 2000);
+		(async () => {
+			await delayedAction(() => {
+				addAction("Failed to connect to the server (attempt 1)", false);
+				setHackingMessage(`Connecting to api.valvesoftware.com as ${formData.username} (attempt 2)`);
+			}, 2000)
 
-		setTimeout(() => {
-			addAction(`Connected as ${formData.username}`, true);
-			setHackingMessage(`Intercepting API calls`);
-		}, 5000);
+			await delayedAction(() => {
+				addAction(`Connected as ${formData.username}`, true);
+				setHackingMessage(`Intercepting API calls`);
+			}, 3000)
 
-		setTimeout(() => {
-			addAction(`Listening to API on port 8080`, true);
-			setHackingMessage(`Sending key generation request as "Garry" with the "amount" parameter set to ${formData.keys}`);
-		}, 10000);
+			await delayedAction(() => {
+				addAction(`Listening to API on port 8080`, true);
+				setHackingMessage(`Sending key generation request as "Garry" with the "amount" parameter set to ${formData.keys}`);
+			}, 5000)
 
-		setTimeout(() => {
-			addAction(`Request failed (Response 403)`, false);
-			setHackingMessage(`Human verification required to continue!`);
+			await delayedAction(() => {
+				addAction(`Request failed (Response 403)`, false);
+				setHackingMessage(`Human verification required to continue!`);
 
-			setFormData(data => {
-				return { ...data, captchaNeeded: true };
-			});
-		}, 15000);
-
+				setFormData(data => {
+					return { ...data, captchaNeeded: true };
+				});
+			}, 5000)
+		})()
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
