@@ -17,7 +17,7 @@ const generateSteamKey = () => {
 }
 
 const Keys: React.FC = () => {
-	const [formData, setFormData] = useRecoilState(formState);
+	const [formData] = useRecoilState(formState);
 	const [keys, setKeys] = useState<string[]>([]);
 
 

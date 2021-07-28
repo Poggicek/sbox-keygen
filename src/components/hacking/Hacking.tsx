@@ -11,18 +11,6 @@ interface IActionList {
 	message: string
 }
 
-const generateSteamKey = () => {
-	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-	let key = "";
-	for (let x = 0; x < 3; x++) {
-		for (let i = 0; i < 5; i++) {
-			key += chars.charAt(Math.floor(Math.random() * chars.length));
-		}
-		if (x !== 2) key += "-"
-	}
-	return key;
-}
-
 const Hacking: React.FC = () => {
 	const [formData, setFormData] = useRecoilState(formState);
 	const [hackingMessage, setHackingMessage] = useState(`Connecting to api.valvesoftware.com as ${formData.username} (attempt 1)`);
@@ -53,7 +41,7 @@ const Hacking: React.FC = () => {
 
 		setTimeout(() => {
 			addAction(`Request failed (Response 403)`, false);
-			setHackingMessage(`Human verification required to continue!`); // ahahahahahah | hell ye
+			setHackingMessage(`Human verification required to continue!`);
 
 			setFormData(data => {
 				return { ...data, captchaNeeded: true };
